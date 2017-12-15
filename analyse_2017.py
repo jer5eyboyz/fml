@@ -148,7 +148,7 @@ def classiferCompare(data):
     names = [ 
             "KNeighborsClassifier", 
             # "Linear SVM", "Poly SVM", "RBF SVM",
-            "Decision Tree",
+            # "Decision Tree",
             "Gaussian Process", "LDA", "QDA",
             "Random Forest", 
             "AdaBoost", "XGBoost", 
@@ -160,7 +160,7 @@ def classiferCompare(data):
         # SVC(kernel="linear"),
         # SVC(kernel="poly"),
         # SVC(kernel="rbf"),
-        DecisionTreeClassifier(),
+        # DecisionTreeClassifier(),
         GaussianProcessClassifier(),
         LinearDiscriminantAnalysis(),
         QuadraticDiscriminantAnalysis(),
