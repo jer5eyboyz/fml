@@ -55,6 +55,7 @@ def splitData(data):
     # X = data.values
     # X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.3)
     print ("Data size:", data.shape)
+    print ("No of Features:", len(data.columns.values))
     print (list(data.columns.values))
 
     Y_downsampled = data['class'].values
@@ -189,24 +190,23 @@ def paramSearchSVM(X_train, X_test, Y_train, Y_test):
 def paramSearchAdaboost(X_train, X_test, Y_train, Y_test):
     
     print ("Adaboost Parameter Search")
-    # # Decision Tree
-    # print ("Base estimator: Decision Tree")
-    # parameters = {'base_estimator__splitter':["best"],
-    #               'base_estimator__min_samples_leaf': [1, 5, 10], 
-    #               'base_estimator__max_depth': [1, 5, 10, 30],
-    #               # 'base_estimator__min_leaf_size':[10, 15, 40],
-                    # min size fo split
-                    # minimal gain
-    #               'n_estimators': [50, 100, 200, 250, 300], 
-    #               }
-    # adaBoost = AdaBoostClassifier(base_estimator = DecisionTreeClassifier())
-    # clf = GridSearchCV(adaBoost, param_grid=parameters)
-    # clf.fit(X_train, Y_train)
-    # print (clf.best_estimator_)
-    # print (clf.best_params_)
-    # print (clf.best_score_)
+    # Decision Tree
+    print ("Base estimator: Decision Tree")
+    parameters = {'base_estimator__min_samples_split':[5, 10, 15, 50],
+                  'base_estimator__min_samples_leaf': [1, 5, 10, 15], 
+                  'base_estimator__max_depth': [1, 5, 10, 30],
+                  'base_estimator__criterion':["gini", "entropy"],
+                  'learning_rate':[0.1, 0.5, 1, 5, 10],
+                  'n_estimators': [50, 100, 200, 250, 300], 
+                  }
+    adaBoost = AdaBoostClassifier(base_estimator = DecisionTreeClassifier())
+    clf = GridSearchCV(adaBoost, param_grid=parameters, cv=5)
+    clf.fit(X_train, Y_train)
+    print (clf.best_estimator_)
+    print (clf.best_params_)
+    print (clf.best_score_)
 
-
+    """
     # Random Forest
     print ("Base estimator: Random Forest ")
     parameters = {'base_estimator__n_estimators':[10, 25, 50, 100, 150, 200],
@@ -249,18 +249,18 @@ def paramSearchAdaboost(X_train, X_test, Y_train, Y_test):
     # print (clf.best_estimator_)
     # print (clf.best_params_)
     # print (clf.best_score_)
-
+    """
 
 def main():
 
     data = pd.read_pickle('1995_2017_down_sample_30_feature.p')
     # data = pd.read_pickle('2010_2017_down_sample.p')
     X_train, X_test, Y_train, Y_test = splitData(data)
-    classiferCompare(X_train, X_test, Y_train, Y_test)
+    # classiferCompare(X_train, X_test, Y_train, Y_test)
     # data = pd.read_pickle("~/Desktop/fml/2010_2017_down_sample.p")
 
     # Parameter Search for Adaboost
-    # paramSearchAdaboost(X_train, X_test, Y_train, Y_test)
+    paramSearchAdaboost(X_train, X_test, Y_train, Y_test)
 
     # Parameter Search for Logistic Regression(L1)
     # paramSearchLogistic(X_train, X_test, Y_train, Y_test)
